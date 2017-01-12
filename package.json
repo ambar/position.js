@@ -1,0 +1,47 @@
+{
+  "name": "position.js",
+  "version": "0.0.1",
+  "description": "Positions a popup element to an anchor element.",
+  "main": "lib/position.js",
+  "module": "src/position.js",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "start": "BABEL_ENV=examples node examples/server.js",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "npm test -- --watch",
+    "build": "rm -rf ./lib && NODE_ENV=production babel src --out-dir lib",
+    "build:examples": "rm -rf ./examples/dist && BABEL_ENV=examples NODE_ENV=production webpack --config ./examples/webpack.config.js && cp examples/index.html examples/dist/",
+    "prepublish": "npm run eslint && npm test && npm run build",
+    "eslint": "eslint src"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.0.20",
+    "babel-eslint": "^7.1.0",
+    "babel-loader": "^6.0.1",
+    "babel-preset-es2015": "^6.0.15",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "classnames": "^2.2.5",
+    "css-loader": "^0.26.1",
+    "eslint": "^3.9.1",
+    "eslint-config-zhihu": "^0.2.2",
+    "express": "^4.13.4",
+    "jest": "^18.1.0",
+    "postcss-cssnext": "^2.9.0",
+    "postcss-loader": "^1.2.1",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-hot-loader": "3.0.0-beta.6",
+    "style-loader": "^0.13.1",
+    "webpack": "2.2.0-rc.3",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.10.0"
+  },
+  "dependencies": {}
+}

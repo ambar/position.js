@@ -1,0 +1,6 @@
+.DS_Store
+npm-debug.log
+/coverage
+/examples/dist
+/lib
+/node_modules
