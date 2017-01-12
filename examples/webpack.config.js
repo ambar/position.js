@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const resolvePath = path.resolve.bind(null, __dirname)
 const context = resolvePath('.')
@@ -7,6 +8,9 @@ const context = resolvePath('.')
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin(),
+  new HtmlWebpackPlugin({
+    template: 'index.html',
+  }),
 ]
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -36,8 +40,8 @@ module.exports = {
   },
   output: {
     path: resolvePath('dist'),
-    publicPath: '/',
-    filename: '[name].js',
+    publicPath: isProduction ? '/position.js/' : '/',
+    filename: isProduction ? '[name].[hash].js' : '[name].js',
   },
   performance: {
     hints: false,
