@@ -53,7 +53,7 @@ module.exports = {
         loader: 'babel-loader',
         include: [
           context,
-          resolvePath('../src')
+          resolvePath('../src'),
         ],
       },
       {

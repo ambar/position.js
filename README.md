@@ -2,18 +2,23 @@
 
 😉
 
+## Demo
+
+[position.js](http://ambar.li/position.js/)
+
 ## Usage
 
 Positions a popup element to an anchor element:
 
 ```js
-const {left, top} = position(popup, anchor, 'top')
+const {left, top, placement, offset, popupRect, anchorRect} = position(popup, anchor, 'top', {adjustXY: 'auto'})
+// => {left: 200, top: 200, placement: 'bottom', offset: Point, popupRect: Rect, anchorRect: Rect}
 Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
 ```
 
 ## API
 
-`position(popup, anchor, preset, options)`
+`position(popup, anchor, placement, options)`
 
 ### Options
 
@@ -23,11 +28,13 @@ Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
   fixed: false,
   // any scroller element, defaults to document.body
   offsetParent: document.body,
+  // 'auto': adjusts horizontally or vertically, 'both': adjusts horizontally and vertically, defaults to 'none'
+  adjustXY: 'none',
 }
 ```
 
 
-### Presets
+### Placement Presets
 
 - `top`
 - `right`
@@ -44,10 +51,10 @@ Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
 - `left-bottom`
 
 
-### Combos
+### Placement Combos
 
 ```
 position(popup, anchor, {popup: 'left-top', anchor: 'right-top'})
-// same as `right-top` preset
+// same as `right-top` placement
 position(popup, anchor, 'right-top')
 ```

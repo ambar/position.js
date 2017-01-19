@@ -50,8 +50,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 500px;
   min-width: 400px;
+}
+
+.optionName {
+  padding-right: .5em;
 }
 
 .columns {
@@ -89,31 +94,40 @@ body {
   background-image: linear-gradient(#eee .1em, transparent .1em);
   background-size: 100% 1.2em;
 
-  &:before {
-    display: inline-block;
-    padding: .6em .8em;
-    content: 'Scroller';
-  }
-
   & .scrollerInner {
     min-width: 2000px;
     min-height: 2000px;
   }
 
   & .anchor {
-    margin-left: 200px;
-    margin-top: 200px;
+    margin-left: 380px;
+    margin-top: 250px;
   }
+}
+
+.status {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: .25em .5em;
+  color: rgb(173, 173, 188, .5);
 }
 
 .anchor {
   display: block;
-  width: 100px;
+  min-width: 100px;
   height: 40px;
   color: #fff;
   border: none;
   text-align: center;
   background-color: green;
+  white-space: nowrap;
+  outline: none;
+  cursor: move;
+
+  & code {
+    background: none;
+  }
 }
 
 .popup {
