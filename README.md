@@ -11,7 +11,9 @@
 Positions a popup element to an anchor element:
 
 ```js
-const {left, top, placement, offset, popupRect, anchorRect} = position(popup, anchor, 'top', {adjustXY: 'auto'})
+const {left, top, placement, ...rest} = position(popup, anchor, 'top', {
+  adjustXY: 'auto',
+})
 // => {left: 200, top: 200, placement: 'bottom', offset: Point, popupRect: Rect, anchorRect: Rect}
 Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
 ```
@@ -33,7 +35,6 @@ Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
 }
 ```
 
-
 ### Placement Presets
 
 - `top`
@@ -49,7 +50,6 @@ Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
 - `bottom-right`
 - `left-top`
 - `left-bottom`
-
 
 ### Placement Combos
 
