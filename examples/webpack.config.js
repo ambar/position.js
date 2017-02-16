@@ -46,6 +46,12 @@ module.exports = {
   performance: {
     hints: false,
   },
+  resolve: {
+    alias: {
+      'position.js': resolvePath('../src'),
+    },
+    extensions: ['.js'],
+  },
   module: {
     rules: [
       {

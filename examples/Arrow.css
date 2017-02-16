@@ -1,0 +1,35 @@
+.arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border: solid transparent;
+}
+
+.top {
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%) translateY(-100%);
+  border-top: none;
+}
+
+.right {
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  border-right: none;
+}
+
+.bottom {
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: none;
+}
+
+.left {
+  top: 50%;
+  left: 0;
+  transform: translateX(-100%) translateY(-50%);
+  border-left: none;
+}
+

@@ -2,7 +2,9 @@
 import React from 'react'
 import cx from 'classnames'
 import Draggable from 'react-draggable'
-import position, {presets} from '../src/position'
+import Arrow from './Arrow'
+import position, {presets} from 'position.js'
+import {getOppositePlacement} from '../src/helpers'
 import styles from './PositionExample.css'
 
 const placementsKeys = Object.keys(presets)
@@ -59,7 +61,8 @@ class PositionExample extends React.Component {
     actualPlacement: '',
     anchorCorner: '',
     popupCorner: '',
-    popupStyle: {},
+    popupOffset: {left: 0, top: 0},
+    arrowOffset: {left: 0, top: 0},
     offset: {x: 0, y: 0},
     dragPosition: null,
     scrollerStatus: {},
@@ -109,13 +112,12 @@ class PositionExample extends React.Component {
         'scroller': this.scroller,
         'document.body': document.body,
       }
-      const {left, top, offset, placement: actualPlacement} = position(this.popup, this.anchor, expectedPlacement, {
+      const {popupOffset, arrowOffset, placement: actualPlacement} = position(this.popup, this.anchor, expectedPlacement, {
         fixed,
         adjustXY,
         offsetParent: offsetParents[offsetParent],
       })
-      const popupStyle = {left, top}
-      this.setState({popupStyle, offset, actualPlacement})
+      this.setState({popupOffset, arrowOffset, actualPlacement})
     }
   }
 
@@ -267,8 +269,8 @@ class PositionExample extends React.Component {
       actualPlacement,
       popupCorner,
       anchorCorner,
-      popupStyle,
-      offset,
+      popupOffset,
+      arrowOffset,
       dragPosition,
       scrollerStatus,
     } = this.state
@@ -283,7 +285,7 @@ class PositionExample extends React.Component {
           </div>
         }
         <div className={styles.status}>
-          {`Popup: ${offset.x.toFixed()}, ${offset.y.toFixed()}`}
+          {`Popup: ${popupOffset.left.toFixed()}, ${popupOffset.top.toFixed()}`}
           {shouldRenderScroller &&
              ` Scroller: ${scrollerStatus.scrollLeft.toFixed()}, ${scrollerStatus.scrollTop.toFixed()}`
           }
@@ -313,8 +315,16 @@ class PositionExample extends React.Component {
               className={cx(styles.popup, {
                 [styles.isFixed]: fixed
               })}
-              style={popupStyle}
+              style={popupOffset}
             >
+              {typeof actualPlacement === 'string' &&
+                <Arrow
+                  offset={arrowOffset}
+                  direction={getOppositePlacement(actualPlacement.split('-')[0])}
+                  color='#78787b'
+                  size={8}
+                />
+              }
               <h2>Popup</h2>
               <pre>
                 {

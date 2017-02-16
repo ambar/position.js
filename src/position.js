@@ -6,6 +6,7 @@ import {
   getOppositePlacement,
   getClockwisePlacement,
   getScrollerBoundsAndOffset,
+  getArrowOffset,
 } from './helpers'
 
 const canUseDOM = typeof window === 'object' && typeof document === 'object'
@@ -39,13 +40,20 @@ const calculatePosition = (popup, anchor, placement, options) => {
     return null
   }
 
-  const offset = anchorCorner.subtract(popupCorner).subtract(getScrollerBoundsAndOffset(options).offset)
+  // relative to viewport
+  const fixedOffset = anchorCorner.subtract(popupCorner)
+  // relative to viewport
+  const fixedPopupRect = popupRect.translate(fixedOffset)
+  // relative to scroller
+  const offset = fixedOffset.subtract(getScrollerBoundsAndOffset(options).offset)
 
   return {
     offset,
     placement,
     anchorRect,
-    popupRect: popupRect.translate(offset),
+    popupRect: fixedPopupRect,
+    popupOffset: {left: offset.x, top: offset.y},
+    arrowOffset: getArrowOffset(fixedPopupRect, anchorRect, placement),
     // compatible with v0.0.1
     left: offset.x,
     top: offset.y,
@@ -59,7 +67,6 @@ const calculateVisibleAreaRatio = (rect, bounds) => {
 
 const findProperPosition = (popup, anchor, placements, options) => {
   const {bounds} = getScrollerBoundsAndOffset(options)
-  const popupRect = Rect.fromBoundingClientRect(popup).setLocation(Point.Zero)
   const positionInfos = []
   for (const placement of placements) {
     const positionInfo = calculatePosition(popup, anchor, placement, options)
@@ -67,7 +74,8 @@ const findProperPosition = (popup, anchor, placements, options) => {
       continue
     }
 
-    const positionedPopupRect = popupRect.translate(positionInfo.offset)
+    // relative to scroller
+    const positionedPopupRect = positionInfo.popupRect.translate(positionInfo.offset)
     if (bounds.contains(positionedPopupRect)) {
       return positionInfo
     }
@@ -115,5 +123,4 @@ const position = (popup, anchor, placement, options) => {
   return calculatePosition(popup, anchor, placement, options)
 }
 
-export {presets}
 export default position

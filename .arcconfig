@@ -1,7 +1,0 @@
-{
-  "project_id": "position.js",
-  "conduit_uri": "http://ph.in.zhihu.com",
-  "arc.land.onto.default": "master",
-  "arc.land.remote.default": "origin",
-  "history.immutable": true
-}

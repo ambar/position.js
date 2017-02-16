@@ -11,11 +11,19 @@
 Positions a popup element to an anchor element:
 
 ```js
-const {left, top, placement, ...rest} = position(popup, anchor, 'top', {
-  adjustXY: 'auto',
-})
-// => {left: 200, top: 200, placement: 'bottom', offset: Point, popupRect: Rect, anchorRect: Rect}
-Object.assign(popup.style, {left: `${left}px`, top: `${top}px`})
+const {
+  placement, // actual placement
+  popupOffset, // CSS position: {left, top}
+  arrowOffset, // CSS position: {left, top}
+  popupRect,
+  anchorRect,
+} = position(popup, anchor, 'top', options)
+
+// DOM
+Object.assign(popup.style, popupOffset)
+
+// React
+<Popup style={popupOffset} arrowOffset={arrowOffset} placement={placement} />
 ```
 
 ## API
