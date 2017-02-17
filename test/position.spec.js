@@ -76,6 +76,52 @@ describe('position', () => {
     expect(position(big, little, {popup: 'top-left', anchor: 'top-left'})).toMatchObject({left: 100, top: 100})
   })
 
+  it('matches position info', () => {
+    const top = -100
+    const left = 50
+    expect(position(big, little, 'top')).toMatchObject({
+      top,
+      left,
+      offset: {x: left, y: top},
+      popupOffset: {top, left},
+      arrowOffset: {top: '100%', left: 100},
+    })
+  })
+
+  describe('arrow offsets', () => {
+    it('calculates top arrow offset', () => {
+      expect(position(big, little, 'top').arrowOffset).toMatchObject({left: 100, top: '100%'})
+      expect(position(big, little, 'top-left').arrowOffset).toMatchObject({left: 50, top: '100%'})
+      expect(position(big, little, 'top-right').arrowOffset).toMatchObject({left: 150, top: '100%'})
+    })
+
+    it('calculates right arrow offset', () => {
+      expect(position(big, little, 'right').arrowOffset).toMatchObject({left: 0, top: 100})
+      expect(position(big, little, 'right-top').arrowOffset).toMatchObject({left: 0, top: 50})
+      expect(position(big, little, 'right-bottom').arrowOffset).toMatchObject({left: 0, top: 150})
+    })
+
+    it('calculates bottom arrow offset', () => {
+      expect(position(big, little, 'bottom').arrowOffset).toMatchObject({left: 100, top: 0})
+      expect(position(big, little, 'bottom-left').arrowOffset).toMatchObject({left: 50, top: 0})
+      expect(position(big, little, 'bottom-right').arrowOffset).toMatchObject({left: 150, top: 0})
+    })
+
+    it('calculates left arrow offset', () => {
+      expect(position(big, little, 'left').arrowOffset).toMatchObject({left: '100%', top: 100})
+      expect(position(big, little, 'left-top').arrowOffset).toMatchObject({left: '100%', top: 50})
+      expect(position(big, little, 'left-bottom').arrowOffset).toMatchObject({left: '100%', top: 150})
+    })
+
+    it('calculates center arrow offset', () => {
+      expect(position(big, little, 'center').arrowOffset).toMatchObject({left: 0, top: 0})
+    })
+
+    it('do not calculate combos', () => {
+      expect(position(big, little, {popup: 'bottom-right', anchor: 'top-right'}).arrowOffset).toMatchObject({left: 0, top: 0})
+    })
+  })
+
   describe('adjustXY option', () => {
     const fromViewport = Rect.fromViewport
     const bounds = new Rect(0, 0, 1000, 1000)

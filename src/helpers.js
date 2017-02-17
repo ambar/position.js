@@ -1,21 +1,6 @@
 import Rect from './Rect'
 import Point from './Point'
-
-const oppositeDirections = {
-  top: 'bottom',
-  bottom: 'top',
-  left: 'right',
-  right: 'left',
-  center: 'center',
-}
-
-const clockwiseDirections = {
-  top: 'right',
-  right: 'bottom',
-  bottom: 'left',
-  left: 'top',
-  center: 'center',
-}
+import {oppositeDirections, clockwiseDirections} from './constants'
 
 export const toCamelCase = s => (
   s.replace(/([-_])([a-z])/g, (s, a, b) => b.toUpperCase())
@@ -108,3 +93,52 @@ export const getScrollerBoundsAndOffset = ({fixed, offsetParent}) => {
     bounds: bounds.translate(nativeOffset),
   }
 }
+
+/*
+ * 箭头属于 popup，始终对齐到 anchor 的中间：
+ *
+ * // 边对齐，popup 宽于 anchor
+ * [       ∨ ] popup
+ *       [   ] anchor
+ *
+ * // 边对齐，popup 窄于 anchor
+ * [ ∨ ]       popup
+ * [         ] anchor
+ *
+ * // 非边对齐，popup 窄于 anchor
+ *   [   ]      anchor
+ * [   ∧     ]  popup
+ *
+ * // 非边对齐，popup 宽于 anchor
+ * [   ∨     ]  popup
+ *   [   ]      anchor
+ *
+ */
+export const getArrowOffset = (popupRect, anchorRect, placement) => {
+  const [main] = parsePlacementPair(placement)
+
+  if (main === 'top' || main === 'bottom') {
+    const top = main === 'top' ? '100%' : 0
+    const narrowerRect = popupRect.width <= anchorRect.width ? popupRect : anchorRect
+    if (narrowerRect === popupRect) {
+      return {left: '50%', top}
+    }
+    return {
+      left: (anchorRect.left - popupRect.left) + narrowerRect.width / 2,
+      top,
+    }
+  } else if (main === 'left' || main === 'right') {
+    const left = main === 'left' ? '100%' : 0
+    const shorterRect = popupRect.height <= anchorRect.height ? popupRect : anchorRect
+    if (shorterRect === popupRect) {
+      return {left, top: '50%'}
+    }
+    return {
+      left,
+      top: (anchorRect.top - popupRect.top) + shorterRect.height / 2,
+    }
+  }
+
+  return {left: 0, top: 0}
+}
+
