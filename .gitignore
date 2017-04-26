@@ -1,6 +1,7 @@
 .DS_Store
-npm-debug.log
+*.log
 /coverage
 /examples/dist
+/es
 /lib
 /node_modules
