@@ -4,7 +4,7 @@ Positions a popup element to an anchor element 😉
 
 [![build status](https://img.shields.io/travis/ambar/position.js/master.svg?style=flat-square)](https://travis-ci.org/ambar/position.js)
 [![npm version](https://img.shields.io/npm/v/position.js.svg?style=flat-square)](https://www.npmjs.com/package/position.js)
-
+[![Greenkeeper badge](https://badges.greenkeeper.io/ambar/position.js.svg)](https://greenkeeper.io/)
 
 ## Demo
 
