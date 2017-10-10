@@ -59,7 +59,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-draggable": "^3.0.3",
-    "react-hot-loader": "3.0.0-beta.6",
+    "react-hot-loader": "3.0.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.6.0",
     "webpack-dev-middleware": "^1.10.2",
