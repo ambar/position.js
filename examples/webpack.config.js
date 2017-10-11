@@ -7,7 +7,7 @@ const context = resolvePath('.')
 
 const plugins = [
   new webpack.HotModuleReplacementPlugin(),
-  new webpack.NoErrorsPlugin(),
+  new webpack.NoEmitOnErrorsPlugin(),
   new HtmlWebpackPlugin({
     template: 'index.html',
   }),
@@ -32,11 +32,7 @@ module.exports = {
   plugins,
   devtool: 'cheap-module-source-map',
   entry: {
-    app: [
-      'react-hot-loader/patch',
-      'webpack-hot-middleware/client',
-      './index',
-    ],
+    app: ['react-hot-loader/patch', 'webpack-hot-middleware/client', './index'],
   },
   output: {
     path: resolvePath('dist'),
@@ -57,10 +53,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [
-          context,
-          resolvePath('../src'),
-        ],
+        include: [context, resolvePath('../src')],
       },
       {
         test: /\.css$/,
