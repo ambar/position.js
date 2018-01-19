@@ -2,6 +2,24 @@ import Rect from './Rect'
 import Point from './Point'
 import {oppositeDirections, clockwiseDirections} from './constants'
 
+const canUseDOM = typeof window === 'object' && typeof document === 'object'
+
+const isWebkit =
+  canUseDOM &&
+  navigator.userAgent.indexOf('AppleWebKit') > -1
+
+// polyfill for document.scrollingElement
+// @see https://github.com/facebook/fbjs/blob/master/packages/fbjs/src/core/dom/getDocumentScrollElement.js
+export const getDocumentScrollingElement = () => {
+  if (!canUseDOM) return null
+  if (document.scrollingElement) {
+    return document.scrollingElement
+  }
+  return !isWebkit && document.compatMode === 'CSS1Compat' ?
+    document.documentElement :
+    document.body
+}
+
 export const toCamelCase = s => (
   s.replace(/([-_])([a-z])/g, (s, a, b) => b.toUpperCase())
 )
@@ -78,7 +96,7 @@ export const getScrollerBoundsAndOffset = ({fixed, offsetParent}) => {
 
   const nativeOffset = getNativeScrollerOffset(offsetParent)
   // 以窗口滚动的绝对定位，把坐标转换到文档顶部
-  const useWindowAsScroller = offsetParent === document.body
+  const useWindowAsScroller = offsetParent === getDocumentScrollingElement()
   if (useWindowAsScroller) {
     return {
       offset: nativeOffset.negative(),
