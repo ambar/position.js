@@ -7,15 +7,14 @@ import {
   getClockwisePlacement,
   getScrollerBoundsAndOffset,
   getArrowOffset,
+  getDocumentScrollingElement,
 } from './helpers'
-
-const canUseDOM = typeof window === 'object' && typeof document === 'object'
 
 const defaults = {
   // use fixed or absolute position
   fixed: false,
   // any scroller element
-  offsetParent: canUseDOM ? document.body : null,
+  offsetParent: getDocumentScrollingElement(),
   // 'auto': adjusts horizontally or vertically, 'both': adjusts horizontally and vertically, defaults to 'none'
   adjustXY: 'none',
 }
