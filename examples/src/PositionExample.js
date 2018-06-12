@@ -4,8 +4,8 @@ import cx from 'classnames'
 import Draggable from 'react-draggable'
 import Arrow from './Arrow'
 import position, {presets} from 'position.js'
-import {getOppositePlacement} from '../src/helpers'
-import styles from './PositionExample.css'
+import {getOppositePlacement} from 'position.js/helpers'
+import styles from './PositionExample.module.css'
 
 const placementsKeys = Object.keys(presets)
 const combosKeys = [
@@ -28,7 +28,7 @@ const stringifyObject = obj => (
   JSON.stringify(obj, null, '  ')
     .replace(/"([^"]+)":/g, '$1:')
     .replace(/"/g, `'`)
-    .replace(/\n\}$/g, `,\n\}`)
+    .replace(/\n}$/g, `,\n}`)
 )
 
 const Select = ({className, name, options, value, onChange, inline=false}) => (
