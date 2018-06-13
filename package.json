@@ -4,28 +4,24 @@
   "description": "Positions a popup element to an anchor element.",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "license": "MIT",
+  "repository": "ambar/position.js",
   "files": [
     "es",
-    "lib",
-    "src"
+    "lib"
   ],
   "scripts": {
-    "start": "BABEL_ENV=examples node examples/server.js",
+    "start": "cd examples && yarn && npm start",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "npm test -- --watch",
+    "test:watch": "jest --watch --notify",
     "build:commonjs": "rm -rf ./lib && NODE_ENV=production BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "rm -rf ./es && NODE_ENV=production BABEL_ENV=es babel src --out-dir es",
     "build": "npm run build:commonjs && npm run build:es",
-    "build:examples": "rm -rf ./examples/dist && BABEL_ENV=examples NODE_ENV=production webpack --config ./examples/webpack.config.js",
-    "deploy:examples": "gh-pages -o github -d ./examples/dist",
+    "build:examples": "cd examples && PUBLIC_URL=/position.js/ npm run build",
+    "deploy:examples": "gh-pages -o github -d ./examples/build",
     "prepublish": "npm run eslint && npm test && npm run build",
     "eslint": "eslint src"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ambar/position.js.git"
   },
   "keywords": [
     "position",
