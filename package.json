@@ -4,28 +4,24 @@
   "description": "Positions a popup element to an anchor element.",
   "main": "lib/index.js",
   "module": "es/index.js",
+  "license": "MIT",
+  "repository": "ambar/position.js",
   "files": [
     "es",
-    "lib",
-    "src"
+    "lib"
   ],
   "scripts": {
-    "start": "BABEL_ENV=examples node examples/server.js",
+    "start": "cd examples && yarn && npm start",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "test:watch": "npm test -- --watch",
+    "test:watch": "jest --watch --notify",
     "build:commonjs": "rm -rf ./lib && NODE_ENV=production BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "rm -rf ./es && NODE_ENV=production BABEL_ENV=es babel src --out-dir es",
     "build": "npm run build:commonjs && npm run build:es",
-    "build:examples": "rm -rf ./examples/dist && BABEL_ENV=examples NODE_ENV=production webpack --config ./examples/webpack.config.js",
-    "deploy:examples": "gh-pages -o github -d ./examples/dist",
+    "build:examples": "cd examples && PUBLIC_URL=/position.js/ npm run build",
+    "deploy:examples": "gh-pages -o github -d ./examples/build",
     "prepublish": "npm run eslint && npm test && npm run build",
     "eslint": "eslint src"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ambar/position.js.git"
   },
   "keywords": [
     "position",
@@ -42,29 +38,12 @@
     "babel-cli": "^6.18.0",
     "babel-core": "^6.24.1",
     "babel-eslint": "^8.0.0",
-    "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "classnames": "^2.2.5",
-    "css-loader": "^0.28.7",
-    "eslint": "^4.7.1",
-    "eslint-config-zhihu": "^0.2.2",
-    "express": "^4.13.4",
+    "eslint": "^4.15.0",
+    "eslint-config-zhihu": "^1.0.1",
+    "eslint-plugin-import": "^2.12.0",
     "gh-pages": "^1.0.0",
-    "html-webpack-plugin": "^2.26.0",
-    "jest": "^22.0.0",
-    "postcss-cssnext": "^3.0.2",
-    "postcss-loader": "^2.0.6",
-    "prop-types": "^15.6.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-draggable": "^3.0.3",
-    "react-hot-loader": "^3.0.0",
-    "style-loader": "^0.20.0",
-    "webpack": "^3.6.0",
-    "webpack-dev-middleware": "^2.0.0",
-    "webpack-hot-middleware": "^2.19.1"
+    "jest": "22.1.2"
   },
   "dependencies": {}
 }

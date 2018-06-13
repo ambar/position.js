@@ -1,5 +1,5 @@
 class Point {
-  constructor(x=0, y=0) {
+  constructor(x = 0, y = 0) {
     this.x = x
     this.y = y
   }
@@ -12,7 +12,7 @@ class Point {
     return new Point(this.x - point.x, this.y - point.y)
   }
 
-  negative(point) {
+  negative() {
     return new Point(-this.x, -this.y)
   }
 }
