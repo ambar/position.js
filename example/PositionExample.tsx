@@ -3,8 +3,8 @@ import React from 'react'
 import cx from 'classnames'
 import Draggable from 'react-draggable'
 import Arrow from './Arrow'
-import position, {presets} from 'position.js'
-import {getOppositePlacement} from 'position.js/helpers'
+import position, {presets} from '../src'
+import {getOppositePlacement} from '../src/helpers'
 import styles from './PositionExample.module.css'
 
 const placementsKeys = Object.keys(presets)
@@ -21,26 +21,32 @@ const combosKeys = [
   'left-top',
   'left-bottom',
   'left-center',
-  'center'
+  'center',
 ]
 
-const stringifyObject = obj => (
+const stringifyObject = (obj) =>
   JSON.stringify(obj, null, '  ')
     .replace(/"([^"]+)":/g, '$1:')
     .replace(/"/g, `'`)
     .replace(/\n}$/g, `,\n}`)
-)
 
-const Select = ({className, name, options, value, onChange, inline=false}) => (
+const Select = ({
+  className,
+  name,
+  options,
+  value,
+  onChange,
+  inline = false,
+}) => (
   <div
     className={cx(styles.select, className, {
       [styles.isInline]: inline,
     })}
   >
-    {options.map(option =>
+    {options.map((option) => (
       <label key={option}>
         <input
-          type='radio'
+          type="radio"
           name={name}
           value={option}
           checked={value === option}
@@ -48,7 +54,7 @@ const Select = ({className, name, options, value, onChange, inline=false}) => (
         />
         <span>{option}</span>
       </label>
-    )}
+    ))}
   </div>
 )
 
@@ -95,12 +101,19 @@ class PositionExample extends React.Component {
   updateScrollerStatus() {
     const {scrollLeft, scrollTop} = this.scroller
     this.setState({
-      scrollerStatus: {scrollLeft, scrollTop}
+      scrollerStatus: {scrollLeft, scrollTop},
     })
   }
 
   reposition = () => {
-    const {fixed, offsetParent, adjustXY, placement, popupCorner, anchorCorner} = this.state
+    const {
+      fixed,
+      offsetParent,
+      adjustXY,
+      placement,
+      popupCorner,
+      anchorCorner,
+    } = this.state
     let expectedPlacement
     if (placement) {
       expectedPlacement = placement
@@ -109,10 +122,14 @@ class PositionExample extends React.Component {
     }
     if (expectedPlacement) {
       const offsetParents = {
-        'scroller': this.scroller,
+        scroller: this.scroller,
         'document.body': document.body,
       }
-      const {popupOffset, arrowOffset, placement: actualPlacement} = position(this.popup, this.anchor, expectedPlacement, {
+      const {
+        popupOffset,
+        arrowOffset,
+        placement: actualPlacement,
+      } = position(this.popup, this.anchor, expectedPlacement, {
         fixed,
         adjustXY,
         offsetParent: offsetParents[offsetParent],
@@ -122,7 +139,10 @@ class PositionExample extends React.Component {
   }
 
   handleOptionsChange(state) {
-    if (state.offsetParent === 'scroller' && state.offsetParent !== this.state.offsetParent) {
+    if (
+      state.offsetParent === 'scroller' &&
+      state.offsetParent !== this.state.offsetParent
+    ) {
       this.setState({dragPosition: {x: 0, y: 0}}, () => {
         this.scroller.scrollLeft = 200
         this.scroller.scrollTop = 100
@@ -132,7 +152,7 @@ class PositionExample extends React.Component {
     this.setState(state, this.reposition)
   }
 
-  handlePlacementChange(state, isCombo=false) {
+  handlePlacementChange(state, isCombo = false) {
     if (isCombo) {
       if (!state.popupCorner && !this.state.popupCorner) {
         state.popupCorner = combosKeys[0]
@@ -166,10 +186,12 @@ class PositionExample extends React.Component {
             <span className={styles.optionName}>fixed:</span>
             <Select
               inline
-              name='fixed'
+              name="fixed"
               options={['true', 'false']}
               value={String(fixed)}
-              onChange={value => this.handleOptionsChange({fixed: value === 'true'})}
+              onChange={(value) =>
+                this.handleOptionsChange({fixed: value === 'true'})
+              }
             />
           </div>
 
@@ -177,10 +199,12 @@ class PositionExample extends React.Component {
             <span className={styles.optionName}>offsetParent:</span>
             <Select
               inline
-              name='offsetParent'
+              name="offsetParent"
               options={['document.body', 'scroller']}
               value={offsetParent}
-              onChange={value => this.handleOptionsChange({offsetParent: value})}
+              onChange={(value) =>
+                this.handleOptionsChange({offsetParent: value})
+              }
             />
           </div>
 
@@ -188,16 +212,16 @@ class PositionExample extends React.Component {
             <span className={styles.optionName}>adjustXY:</span>
             <Select
               inline
-              name='adjustXY'
+              name="adjustXY"
               options={['none', 'auto', 'both']}
               value={adjustXY}
-              onChange={value => this.handleOptionsChange({adjustXY: value})}
+              onChange={(value) => this.handleOptionsChange({adjustXY: value})}
             />
           </div>
 
           <pre>
             <code>
-{`options = {
+              {`options = {
   // use fixed or absolute position, defaults to false
   fixed: ${fixed},
   // any scroller element, defaults to document.body
@@ -213,14 +237,14 @@ class PositionExample extends React.Component {
           <h2>Presets</h2>
           <pre>
             <code>
-            {`position(popup, anchor, '${placement || 'top'}', options)`}
+              {`position(popup, anchor, '${placement || 'top'}', options)`}
             </code>
           </pre>
           <Select
-            name='placement'
+            name="placement"
             options={placementsKeys}
             value={placement}
-            onChange={value => this.handlePlacementChange({placement: value})}
+            onChange={(value) => this.handlePlacementChange({placement: value})}
           />
         </section>
 
@@ -228,8 +252,11 @@ class PositionExample extends React.Component {
           <h2>Combos</h2>
           <pre>
             <code>
-{placement ? `position(popup, anchor, ${stringifyObject(presets[placement])}, options)` :
-`position(popup, anchor, {
+              {placement
+                ? `position(popup, anchor, ${stringifyObject(
+                    presets[placement]
+                  )}, options)`
+                : `position(popup, anchor, {
   popup: '${popupCorner || 'top-left'}',
   anchor: '${anchorCorner || 'top-left'}',
 }, options)
@@ -240,19 +267,23 @@ class PositionExample extends React.Component {
             <div>
               <h3>popup</h3>
               <Select
-                name='popupCorner'
+                name="popupCorner"
                 options={combosKeys}
                 value={popupCorner}
-                onChange={value => this.handlePlacementChange({popupCorner: value}, true)}
+                onChange={(value) =>
+                  this.handlePlacementChange({popupCorner: value}, true)
+                }
               />
             </div>
             <div>
               <h3>anchor</h3>
               <Select
-                name='anchorCorner'
+                name="anchorCorner"
                 options={combosKeys}
                 value={anchorCorner}
-                onChange={value => this.handlePlacementChange({anchorCorner: value}, true)}
+                onChange={(value) =>
+                  this.handlePlacementChange({anchorCorner: value}, true)
+                }
               />
             </div>
           </div>
@@ -279,19 +310,14 @@ class PositionExample extends React.Component {
 
     return (
       <div className={styles.demo}>
-        {shouldRenderScroller &&
-          <div>
-            Scroller
-          </div>
-        }
+        {shouldRenderScroller && <div>Scroller</div>}
         <div className={styles.status}>
           {`Popup: ${popupOffset.left.toFixed()}, ${popupOffset.top.toFixed()}`}
           {shouldRenderScroller &&
-             ` Scroller: ${scrollerStatus.scrollLeft.toFixed()}, ${scrollerStatus.scrollTop.toFixed()}`
-          }
+            ` Scroller: ${scrollerStatus.scrollLeft.toFixed()}, ${scrollerStatus.scrollTop.toFixed()}`}
         </div>
         <div
-          ref={el => this.scroller = el}
+          ref={(el) => (this.scroller = el)}
           className={cx({
             [styles.scroller]: shouldRenderScroller,
           })}
@@ -303,7 +329,7 @@ class PositionExample extends React.Component {
               offsetParent={this.scroller}
             >
               <button
-                ref={el => this.anchor = el}
+                ref={(el) => (this.anchor = el)}
                 className={styles.anchor}
               >
                 <code>anchor[draggable]</code>
@@ -311,27 +337,27 @@ class PositionExample extends React.Component {
             </Draggable>
 
             <div
-              ref={el => this.popup = el}
+              ref={(el) => (this.popup = el)}
               className={cx(styles.popup, {
-                [styles.isFixed]: fixed
+                [styles.isFixed]: fixed,
               })}
               style={popupOffset}
             >
-              {typeof actualPlacement === 'string' &&
+              {typeof actualPlacement === 'string' && (
                 <Arrow
                   offset={arrowOffset}
-                  direction={getOppositePlacement(actualPlacement.split('-')[0])}
-                  color='#78787b'
+                  direction={getOppositePlacement(
+                    actualPlacement.split('-')[0]
+                  )}
+                  color="#78787b"
                   size={8}
                 />
-              }
+              )}
               <h2>Popup</h2>
               <pre>
-                {
-                  placement
-                    ? `expected: '${placement}'\n  actual: '${actualPlacement}'`
-                    : `{\n  popup: '${popupCorner}', \n  anchor: '${anchorCorner}',\n}`
-                }
+                {placement
+                  ? `expected: '${placement}'\n  actual: '${actualPlacement}'`
+                  : `{\n  popup: '${popupCorner}', \n  anchor: '${anchorCorner}',\n}`}
               </pre>
             </div>
           </div>

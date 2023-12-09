@@ -2,25 +2,24 @@
   "name": "position.js",
   "version": "0.3.0",
   "description": "Positions a popup element to an anchor element.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
   "license": "MIT",
   "repository": "ambar/position.js",
   "files": [
-    "es",
-    "lib"
+    "dist"
   ],
   "scripts": {
-    "start": "cd examples && yarn && npm start",
+    "start": "vite",
+    "build:example": "cd example && PUBLIC_URL=/position.js/ npm run build",
+    "deploy:example": "gh-pages -o github -d ./examples/build",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch --notify",
-    "prebuild": "rm -rf es lib",
+    "prebuild": "rm -rf dist",
     "build": "rollup -c",
-    "build:examples": "cd examples && PUBLIC_URL=/position.js/ npm run build",
-    "deploy:examples": "gh-pages -o github -d ./examples/build",
     "prepublish": "npm run lint && npm test && npm run build",
-    "lint": "eslint src"
+    "lint": "eslint ."
   },
   "keywords": [
     "position",
@@ -34,20 +33,24 @@
     "overlay"
   ],
   "jest": {
+    "testEnvironment": "jsdom",
     "transform": {
-      "^.+\\.js$": "babel-jest"
+      "^.+\\.(t|j)sx?$": "@swc/jest"
     }
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
-    "eslint": "^5.12.0",
+    "@swc/jest": "^0.2.29",
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react-swc": "^3.3.2",
+    "classnames": "^2.2.6",
     "gh-pages": "^3.0.0",
-    "jest": "^23.6.0",
-    "prettier": "^2.0.0",
-    "rollup": "^2.0.0",
-    "rollup-plugin-babel": "^4.2.0"
-  }
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-draggable": "^3.0.5",
+    "vite": "^4.4.5"
+  },
+  "packageManager": "pnpm@8.10.2+sha1.e0b68270e89c817ff88b7be62466a2128c53af02"
 }

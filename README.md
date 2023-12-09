@@ -2,7 +2,6 @@
 
 Positions a popup element to an anchor element 😉
 
-[![build status](https://badgen.net/travis/ambar/position.js)](https://travis-ci.org/ambar/position.js)
 [![npm version](https://badgen.net/npm/v/position.js)](https://www.npmjs.com/package/position.js)
 [![minzipped size](https://badgen.net/bundlephobia/minzip/position.js)](https://bundlephobia.com/result?p=position.js)
 [![Greenkeeper badge](https://badges.greenkeeper.io/ambar/position.js.svg)](https://greenkeeper.io/)

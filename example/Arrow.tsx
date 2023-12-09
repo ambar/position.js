@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import cx from 'classnames'
-import {toCamelCase, getOppositePlacement} from 'position.js/helpers'
+import {toCamelCase, getOppositePlacement} from '../src/helpers'
 import styles from './Arrow.module.css'
 
 const Arrow = ({className, direction, offset, size, color}) =>
@@ -15,9 +14,5 @@ const Arrow = ({className, direction, offset, size, color}) =>
       }}
     />
   )
-
-Arrow.propTypes = {
-  direction: PropTypes.oneOf(['top', 'bottom', 'right', 'left', 'center']),
-}
 
 export default Arrow
