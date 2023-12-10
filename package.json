@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "start": "vite",
-    "build:example": "cd example && PUBLIC_URL=/position.js/ npm run build",
-    "deploy:example": "gh-pages -o github -d ./examples/build",
+    "build:example": "rm -rf example/dist && vite build --base=/position.js/",
+    "deploy:example": "gh-pages -d example/dist",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch --notify",

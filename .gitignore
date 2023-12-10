@@ -1,7 +1,7 @@
 .DS_Store
 *.log
 /coverage
-/examples/dist
+/example/dist
 /dist
 /node_modules
 /tmp
