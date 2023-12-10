@@ -4,6 +4,7 @@
   "description": "Positions a popup element to an anchor element.",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
+  "source": "src/index.ts",
   "license": "MIT",
   "repository": "ambar/position.js",
   "files": [
@@ -16,10 +17,8 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch --notify",
-    "prebuild": "rm -rf dist",
-    "build": "rollup -c",
-    "prepublish": "npm run lint && npm test && npm run build",
-    "lint": "eslint ."
+    "build": "rm -rf dist && rollup -c --bundleConfigAsCjs",
+    "prepublish": "npm test && npm run build"
   },
   "keywords": [
     "position",
@@ -40,6 +39,7 @@
   },
   "devDependencies": {
     "@swc/jest": "^0.2.29",
+    "@types/jest": "^29.5.11",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
     "@vitejs/plugin-react-swc": "^3.3.2",
@@ -50,6 +50,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^3.0.5",
+    "rollup": "^4.7.0",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "typescript": "^5.3.3",
     "vite": "^4.4.5"
   },
   "packageManager": "pnpm@8.10.2+sha1.e0b68270e89c817ff88b7be62466a2128c53af02"

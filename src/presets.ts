@@ -1,4 +1,6 @@
-export default {
+import type {Placement, PlacementCombo} from './types'
+
+export const presets: Record<Placement, PlacementCombo> = {
   center: {
     popup: 'center',
     anchor: 'center',

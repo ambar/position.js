@@ -2,8 +2,7 @@
 *.log
 /coverage
 /examples/dist
-/es
-/lib
+/dist
 /node_modules
 /tmp
 

@@ -1,6 +1,6 @@
-import Rect from './Rect'
-import Point from './Point'
-import presets from './presets'
+import {Rect} from './Rect'
+import {Point} from './Point'
+import {presets} from './presets'
 import {
   parseCorner,
   getOppositePlacement,
@@ -9,6 +9,13 @@ import {
   getArrowOffset,
   getDocumentScrollingElement,
 } from './helpers'
+import type {
+  ElementLike,
+  Placement,
+  PlacementCombo,
+  Options,
+  PlacementPair,
+} from './types'
 
 const defaults = {
   // use fixed or absolute position
@@ -19,13 +26,18 @@ const defaults = {
   adjustXY: 'none',
 }
 
-const calculatePosition = (popup, anchor, placement, options) => {
+const calculatePosition = (
+  popup: ElementLike,
+  anchor: ElementLike,
+  placement: Placement | PlacementCombo,
+  options: Partial<Options> = {}
+) => {
   const anchorRect = Rect.fromBoundingClientRect(anchor)
   const popupRect = Rect.fromBoundingClientRect(popup).setLocation(Point.Zero)
 
-  let corners = placement
+  let corners: PlacementCombo = placement as PlacementCombo
   if (typeof placement === 'string') {
-    corners = presets[placement]
+    corners = presets[placement as Placement]
   }
 
   if (!corners) {
@@ -44,7 +56,9 @@ const calculatePosition = (popup, anchor, placement, options) => {
   // relative to viewport
   const fixedPopupRect = popupRect.translate(fixedOffset)
   // relative to scroller
-  const offset = fixedOffset.subtract(getScrollerBoundsAndOffset(options).offset)
+  const offset = fixedOffset.subtract(
+    getScrollerBoundsAndOffset(options).offset
+  )
 
   return {
     offset,
@@ -52,21 +66,32 @@ const calculatePosition = (popup, anchor, placement, options) => {
     anchorRect,
     popupRect: fixedPopupRect,
     popupOffset: {left: offset.x, top: offset.y},
-    arrowOffset: getArrowOffset(fixedPopupRect, anchorRect, placement),
+    arrowOffset: getArrowOffset(
+      fixedPopupRect,
+      anchorRect,
+      placement as PlacementPair
+    ),
     // compatible with v0.0.1
     left: offset.x,
     top: offset.y,
   }
 }
 
-const calculateVisibleAreaRatio = (rect, bounds) => {
+const calculateVisibleAreaRatio = (rect: Rect, bounds: Rect) => {
   const intersectionRect = Rect.intersect(rect, bounds)
   return intersectionRect ? intersectionRect.area / rect.area : 0
 }
 
-const findProperPosition = (popup, anchor, placements, options) => {
+type PositionInfo = ReturnType<typeof calculatePosition>
+
+const findProperPosition = (
+  popup: ElementLike,
+  anchor: ElementLike,
+  placements: (Placement | PlacementCombo)[],
+  options: Partial<Options> = {}
+) => {
   const {bounds} = getScrollerBoundsAndOffset(options)
-  const positionInfos = []
+  const positionInfos: (PositionInfo & {visibleAreaRatio?: number})[] = []
   for (const placement of placements) {
     const positionInfo = calculatePosition(popup, anchor, placement, options)
     if (!positionInfo) {
@@ -74,21 +99,35 @@ const findProperPosition = (popup, anchor, placements, options) => {
     }
 
     // relative to scroller
-    const positionedPopupRect = positionInfo.popupRect.translate(positionInfo.offset)
+    const positionedPopupRect = positionInfo.popupRect.translate(
+      positionInfo.offset
+    )
     if (bounds.contains(positionedPopupRect)) {
       return positionInfo
     }
 
-    const visibleAreaRatio = calculateVisibleAreaRatio(positionedPopupRect, bounds)
-    positionInfos.push(Object.assign(
-      positionInfo,
-      visibleAreaRatio && {visibleAreaRatio}
-    ))
+    const visibleAreaRatio = calculateVisibleAreaRatio(
+      positionedPopupRect,
+      bounds
+    )
+    positionInfos.push(
+      Object.assign(positionInfo, visibleAreaRatio && {visibleAreaRatio})
+    )
   }
-  return positionInfos.filter(Boolean).sort((a, b) => b.visibleAreaRatio - a.visibleAreaRatio)[0] || null
+  return (
+    positionInfos
+      .filter(Boolean)
+      // @ts-expect-error possibly 'undefined'.
+      .sort((a, b) => b.visibleAreaRatio - a.visibleAreaRatio)[0] || null
+  )
 }
 
-const position = (popup, anchor, placement, options) => {
+const position = (
+  popup: ElementLike,
+  anchor: ElementLike,
+  placement: Placement | PlacementCombo,
+  options: Partial<Options> = {}
+) => {
   options = Object.assign({}, defaults, options)
 
   if (Array.isArray(placement)) {
@@ -98,14 +137,14 @@ const position = (popup, anchor, placement, options) => {
   const {adjustXY} = options
   const adjustsHorizontallyOrVertically = adjustXY === 'auto'
   const adjustsHorizontallyAndVertically = adjustXY === 'both'
-  if (placement !== 'center' && (adjustsHorizontallyOrVertically || adjustsHorizontallyAndVertically)) {
-    let placements = []
+  if (
+    placement !== 'center' &&
+    (adjustsHorizontallyOrVertically || adjustsHorizontallyAndVertically)
+  ) {
+    let placements: Placement[] = []
 
     if (adjustsHorizontallyOrVertically) {
-      placements = [
-        placement,
-        getOppositePlacement(placement),
-      ]
+      placements = [placement, getOppositePlacement(placement)]
     } else if (adjustsHorizontallyAndVertically) {
       const oppositePlacement = getOppositePlacement(placement, true)
       placements = [

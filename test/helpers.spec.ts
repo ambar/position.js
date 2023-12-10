@@ -1,5 +1,5 @@
-import Rect from '../src/Rect'
-import Point from '../src/Point'
+import {Rect} from '../src/Rect'
+import {Point} from '../src/Point'
 import {
   toCamelCase,
   parseCorner,
@@ -7,6 +7,7 @@ import {
   getClockwisePlacement,
   getScrollerBoundsAndOffset,
 } from '../src/helpers'
+import type {Scroller} from '../src/types'
 
 describe('helpers', () => {
   it('toCamelCase', () => {
@@ -52,7 +53,7 @@ describe('helpers', () => {
     const scrollTop = 250
     const scrollOffset = new Point(scrollLeft, scrollTop)
     const zero = new Point(0, 0)
-    let fakeScroller = null
+    let fakeScroller: Scroller
 
     beforeEach(() => {
       Rect.fromViewport = () => viewportBounds
@@ -68,7 +69,7 @@ describe('helpers', () => {
         scrollTop,
         getBoundingClientRect() {
           return scrollerBounds
-        }
+        },
       }
     })
 
@@ -80,28 +81,36 @@ describe('helpers', () => {
     })
 
     it('handles document.body with fixed position', () => {
-      expect(getScrollerBoundsAndOffset({fixed: true, offsetParent: document.body})).toMatchObject({
+      expect(
+        getScrollerBoundsAndOffset({fixed: true, offsetParent: document.body})
+      ).toMatchObject({
         offset: zero,
         bounds: viewportBounds,
       })
     })
 
     it('handles document.body with absolute position ', () => {
-      expect(getScrollerBoundsAndOffset({fixed: false, offsetParent: document.body})).toMatchObject({
+      expect(
+        getScrollerBoundsAndOffset({fixed: false, offsetParent: document.body})
+      ).toMatchObject({
         offset: scrollOffset.negative(),
         bounds: viewportBounds.translate(scrollOffset),
       })
     })
 
     it('handles custom scroller with fixed position ', () => {
-      expect(getScrollerBoundsAndOffset({fixed: true, offsetParent: fakeScroller})).toMatchObject({
+      expect(
+        getScrollerBoundsAndOffset({fixed: true, offsetParent: fakeScroller})
+      ).toMatchObject({
         offset: zero,
         bounds: viewportBounds,
       })
     })
 
     it('handles custom scroller with absolute position ', () => {
-      expect(getScrollerBoundsAndOffset({fixed: false, offsetParent: fakeScroller})).toMatchObject({
+      expect(
+        getScrollerBoundsAndOffset({fixed: false, offsetParent: fakeScroller})
+      ).toMatchObject({
         offset: scrollerBounds.topLeft.subtract(scrollOffset),
         bounds: scrollerBounds.translate(scrollOffset),
       })

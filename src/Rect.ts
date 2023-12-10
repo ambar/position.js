@@ -1,16 +1,19 @@
-import Point from './Point'
+import {Point} from './Point'
+import {DOMLike, ElementLike} from './types'
 
 const {max, min} = Math
 
-class Rect {
-  static fromBoundingClientRect(bcr) {
-    if (bcr.getBoundingClientRect) {
-      bcr = bcr.getBoundingClientRect()
+// prettier-ignore
+export class Rect {
+  static fromBoundingClientRect(bcr: ElementLike) {
+    if ((bcr as DOMLike).getBoundingClientRect) {
+      bcr = (bcr as DOMLike).getBoundingClientRect()
     }
-    return new Rect(bcr.left, bcr.top, bcr.width, bcr.height)
+    // @ts-ignore
+    return new Rect(bcr.x ?? bcr.left, bcr.y ?? bcr.top, bcr.width, bcr.height)
   }
 
-  static intersect(a, b) {
+  static intersect(a: Rect, b: Rect) {
     const top = max(a.top, b.top)
     const right = min(a.right, b.right)
     const bottom = min(a.bottom, b.bottom)
@@ -32,25 +35,34 @@ class Rect {
     return new Rect(0, 0, width, height)
   }
 
-  constructor(x=0, y=0, width=0, height=0) {
+  x: number
+  y: number
+  width: number
+  height: number
+
+  constructor(x = 0, y = 0, width = 0, height = 0) {
     this.x = x
     this.y = y
     this.width = width
     this.height = height
   }
 
-  setLocation(point) {
+  setLocation(point: Point) {
     this.x = point.x
     this.y = point.y
     return this
   }
 
-  contains(rect) {
-    return this.left <= rect.left && this.top <= rect.top &&
-      this.right >= rect.right && this.bottom > rect.bottom
+  contains(rect: Rect) {
+    return (
+      this.left <= rect.left &&
+      this.top <= rect.top &&
+      this.right >= rect.right &&
+      this.bottom > rect.bottom
+    )
   }
 
-  translate(offset) {
+  translate(offset: Point | Rect) {
     return new Rect(offset.x, offset.y, this.width, this.height)
   }
 
@@ -79,6 +91,17 @@ class Rect {
   get centerLeft() { return this.leftCenter }
   get centerBottom() { return this.bottomCenter }
   get centerCenter() { return this.center }
-}
 
-export default Rect
+  toJSON() {
+    return {
+      x: this.x,
+      y: this.y,
+      width: this.width,
+      height: this.height,
+      top: this.top,
+      right: this.right,
+      bottom: this.bottom,
+      left: this.left,
+    }
+  }
+}

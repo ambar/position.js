@@ -1,14 +1,19 @@
-class Point {
+export class Point {
+  static Zero = new Point(0, 0)
+
+  x: number
+  y: number
+
   constructor(x = 0, y = 0) {
     this.x = x
     this.y = y
   }
 
-  add(point) {
+  add(point: Point) {
     return new Point(this.x + point.x, this.y + point.y)
   }
 
-  subtract(point) {
+  subtract(point: Point) {
     return new Point(this.x - point.x, this.y - point.y)
   }
 
@@ -16,7 +21,3 @@ class Point {
     return new Point(-this.x, -this.y)
   }
 }
-
-Point.Zero = new Point(0, 0)
-
-export default Point
