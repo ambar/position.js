@@ -1,8 +1,8 @@
 export type DOMLike = {getBoundingClientRect: () => DOMRectLike}
-export type DOMRectLike =
-  | {x: number; y: number; width: number; height: number}
-  | {left: number; top: number; width: number; height: number}
-export type ElementLike = DOMLike | DOMRectLike
+// prettier-ignore
+export type DOMRectLikeLegacy ={left: number; top: number; width: number; height: number}
+export type DOMRectLike = {x: number; y: number; width: number; height: number}
+export type ElementLike = DOMLike | DOMRectLike | DOMRectLikeLegacy
 
 /** user preset */
 export type Placement =
@@ -33,7 +33,8 @@ export type PlacementCombo = {
 export type Scroller = ElementLike & {scrollLeft: number; scrollTop: number}
 
 export type Options = {
-  offsetParent?: Scroller
   adjustXY?: 'auto' | 'both' | 'none'
   fixed?: boolean
+  offsetParent?: Scroller
+  boundary?: DOMRectLike
 }

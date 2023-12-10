@@ -117,3 +117,14 @@ describe('helpers', () => {
     })
   })
 })
+
+test('custom boundary', () => {
+  expect(
+    getScrollerBoundsAndOffset({
+      boundary: {x: 1, y: 2, width: 3, height: 4},
+    })
+  ).toMatchObject({
+    offset: Point.Zero,
+    bounds: new Rect(1, 2, 3, 4),
+  })
+})

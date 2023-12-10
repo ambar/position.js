@@ -109,7 +109,18 @@ const getNativeScrollerOffset = (scroller: Scroller) => {
   return Point.Zero
 }
 
-export const getScrollerBoundsAndOffset = ({fixed, offsetParent}: Options) => {
+export const getScrollerBoundsAndOffset = ({
+  fixed,
+  offsetParent,
+  boundary,
+}: Options) => {
+  if (boundary) {
+    // 固定定位始终使用视口坐标
+    return {
+      offset: Point.Zero,
+      bounds: Rect.fromRect(boundary),
+    }
+  }
   // 固定定位始终使用视口坐标
   if (fixed || !offsetParent) {
     return {

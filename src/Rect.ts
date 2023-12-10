@@ -1,5 +1,5 @@
 import {Point} from './Point'
-import {DOMLike, ElementLike} from './types'
+import {DOMLike, DOMRectLike, ElementLike} from './types'
 
 const {max, min} = Math
 
@@ -11,6 +11,10 @@ export class Rect {
     }
     // @ts-ignore
     return new Rect(bcr.x ?? bcr.left, bcr.y ?? bcr.top, bcr.width, bcr.height)
+  }
+
+  static fromRect(r: DOMRectLike) {
+    return new Rect(r.x ?? 0, r.y ?? 0, r.width ?? 0, r.height ?? 0)
   }
 
   static intersect(a: Rect, b: Rect) {
@@ -66,6 +70,7 @@ export class Rect {
     return new Rect(offset.x, offset.y, this.width, this.height)
   }
 
+  // prettier-ignore
   get area() { return this.width * this.height }
   get left() { return this.x }
   get top() { return this.y }
